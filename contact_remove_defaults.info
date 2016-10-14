@@ -1,0 +1,7 @@
+name = Contact Remove Defaults
+description = Removes default values from contact forms.
+core = 7.x
+
+dependencies[] = contact
+
+files[] = contact_remove_defaults.test

@@ -1,0 +1,40 @@
+<?php
+
+class ContactRemoveDefaultsTestCase extends DrupalWebTestCase {
+  private $account;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function getInfo() {
+    return array(
+      'name' => 'Contact Remove Defaults',
+      'description' => 'Tests removing default values from contact forms.',
+      'group' => 'Contact Remove Defaults',
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUp() {
+    parent::setUp(array('contact', 'contact_remove_defaults'));
+
+    $this->account = $this->drupalCreateUser(array(
+      'access site-wide contact form'
+    ));
+
+    $this->drupalLogin($this->account);
+  }
+
+  public function testGlobalForm() {
+    $this->drupalGet('contact');
+    $this->assertResponse(200);
+
+    // Assert that the name field does not contain the user name.
+    $this->assertNoRaw('<input type="text" id="edit-name" name="name" value="' . $this->account->name . '"');
+
+    // Assert that the name field does not contain the user email address.
+    $this->assertNoRaw('<input type="text" id="edit-mail" name="mail" value="' . $this->account->mail . '"');
+  }
+}
