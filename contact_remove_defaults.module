@@ -9,6 +9,10 @@
  * Implements hook_form_FORM_ID_alter().
  */
 function contact_remove_defaults_form_contact_site_form_alter(&$form, &$form_state) {
+  if (user_is_anonymous()) {
+    return;
+  }
+
   // Remove default text from "name" and "mail" inputs.
   foreach (array('name', 'mail') as $item) {
     unset($form[$item]['#default_value']);
